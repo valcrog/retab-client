@@ -1,2 +1,1 @@
-- THE UNDO Bug:
-    - in serialize method, we have tabgroups with just note.isthere s stringified. so, in the restore phase, the notes are all regenerated!
+

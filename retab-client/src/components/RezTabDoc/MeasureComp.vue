@@ -16,7 +16,6 @@ import TabGroupComp from './TabGroupComp.vue';
 import { useStore } from 'vuex';
 import StaffComp from './StaffComp.vue';
 import RezTabFile from '@/store/modules/RezTabFile';
-import DevTest from '../utils/DevTest.vue';
 const store = useStore();
 const props = defineProps<{measureN: number, keyK: number}>()
 function getMeasure() {

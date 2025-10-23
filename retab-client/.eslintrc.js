@@ -21,5 +21,6 @@ module.exports = {
     'vue/multi-word-component-names': 'off',
     'vue/no-mutating-props': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
+    'no-unreachable': 'off',
   }
 }

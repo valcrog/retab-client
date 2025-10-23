@@ -9,11 +9,6 @@
                     {{ doc.getAltTitle() }}
                 </h3>
         </div>
-        <div>
-        </div>
-        <div>
-
-        </div>
     </div>
 
 </template>

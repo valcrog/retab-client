@@ -16,7 +16,6 @@ import TabGroup from "@/store/modules/TabGroup";
 import { DurNum, TabType } from "@/store/modules/types";
 import { computed, defineProps, onMounted, onUpdated, ref, ComputedRef, watch, shallowRef } from "vue";
 import { useStore } from "vuex";
-import DevTest from "../utils/DevTest.vue";
 const store = useStore();
 const props = defineProps<{
   tabGroup: TabGroup;
@@ -69,7 +68,6 @@ function setFret(val: any) {//: string | number) {
 }
 
 
-
 function onSpace() {
   useDoc().snapshot();
   event?.preventDefault();
@@ -117,7 +115,7 @@ function onNoteInputFocus() {
 
 function keyup(event: KeyboardEvent) {
   if (event.key == 'D') {
-    console.log(note.value.getDebugElData())
+    console.log(note.value.getDebugData())
   }
   // change the durSym:
   if (event.altKey) {

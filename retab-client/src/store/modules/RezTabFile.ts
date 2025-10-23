@@ -47,7 +47,14 @@ export default class RezTabFile {
   id?: number;
   head?: MeiHead;
   section: Section;
-  lastFocusedNote: Note | undefined;
+  private _lastFocusedNote: (Note | undefined);
+  noteFocusKey = 0;
+  set lastFocusedNote(n: Note | undefined) {
+    this.noteFocusKey++;
+    this._lastFocusedNote = n
+  }
+  get lastFocusedNote() {return this._lastFocusedNote || undefined}
+
   // measures: Measure[] = []
   constructor(info: TRezTabFileInfo) {
     this.info = info;
@@ -81,7 +88,6 @@ export default class RezTabFile {
     this.section.info.staves[0].linesCount = this.docSettings.linesCount;
   }
   unfreeze() {
-
     this.section.measures.forEach((meausre) => {
       meausre.staves.forEach((staff) => {
         staff.tabGroups.forEach((tabgroup) => {
@@ -396,7 +402,7 @@ export default class RezTabFile {
       store.state.utils.keyCoefficient++;
     }
   }
-
+  
   async generateAndDownloadMei() {
     const result = await this.generateMEI();
     const altTitle = this.getAltTitle();

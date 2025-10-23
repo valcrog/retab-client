@@ -1,38 +1,18 @@
 <template>
     <div class="p-4" v-if="isLoaded" ref="retabDocContainer">
-        <Toolbar />
-         <DocTitle :key="store.state.utils.keyCoefficient"/>
+        <Toolbar :key="useDoc().noteFocusKey * toolCompKey" :selected-notes="(sl.selectedNotes as Note[])" />
+        <DocTitle :key="store.state.utils.keyCoefficient" />
         <div class="section flex max-w-full overflow-x-auto overflow-y-hidden">
             <MeasureComp :measure-n="(measure as Measure).n"
-                v-for="(measure, index) in store.state.currentDoc.section.measures" :measure="measure" 
-                :key="(index + 1) * store.state.utils.keyCoefficient *10"
-                :keyK="(index + 1) * store.state.utils.keyCoefficient *10"
-                >
+                v-for="(measure, index) in store.state.currentDoc.section.measures" :measure="measure"
+                :key="(index + 1) * store.state.utils.keyCoefficient * 10"
+                :keyK="(index + 1) * store.state.utils.keyCoefficient * 10">
             </MeasureComp>
             <div class="px-2">
                 <va-button icon="add" :outline="true" class="opacity-80" @click="addMeasure"></va-button>
             </div>
         </div>
-        <DevTest>
-            <div class="grid grid-cols-3 gap-3 py-5">
-                <va-card>
-                    <va-card-content>
-                        {{ useDoc().head?.children.length }}
 
-                        <div class="grid gap-3 grid-cols-3 ">
-
-                            <va-button @click="() => useDoc().snapshot()">Snapshot</va-button>
-                            <va-button @click="() => useDoc().redo()">redo</va-button>
-                            <va-button @click="() => useDoc().unfreeze()">unfreeze</va-button>
-                        </div>
-                        <div>
-
-                        </div>
-                    </va-card-content>
-                </va-card>
-            </div>
-
-        </DevTest>
     </div>
 
 </template>
@@ -46,15 +26,20 @@ import MeasureComp from './MeasureComp.vue';
 import { Instrumnet, TabType } from '@/store/modules/types';
 import Note from '@/store/modules/Note';
 import TabGroup from '@/store/modules/TabGroup';
-import DevTest from '../utils/DevTest.vue';
 import { useDoc } from '@/composables/useDoc';
 import DocTitle from './DocTitle.vue';
-import Toolbar from './Toolbar.vue';
+import Toolbar from './Toolbar/index.vue';
 const store = useStore();
 const props = defineProps<{
     id: string
 }>();
 
+
+
+const toolCompKey = ref(1);
+function updateChildComponents() {
+    toolCompKey.value++
+}
 const retabDocContainer = ref<HTMLElement>();
 
 class SelectionListener {
@@ -95,14 +80,14 @@ class SelectionListener {
         'onMouseDown': { eventType: 'mousedown', method: this.onMouseDown.bind(this) },
         'onMouseUp': { eventType: 'mouseup', method: this.onMouseUp.bind(this) },
         'onMouseMove': { eventType: 'mousemove', method: this.onMouseMove.bind(this) },
-        'selectedNotesKeydownListener': { eventType: 'keydown', method: this.selectedNotesKeydownListener.bind(this) },
+        'selectedNotesKeydownListener': { eventType: 'keyup', method: this.selectedNotesKeyupListener.bind(this) },
         // 'keypress': { eventType: 'keydown', method: this.selectedNotesKeydownListener.bind(this) },
 
     };
 
     onPlus(e: KeyboardEvent) {
         console.log(e);
-        
+
     }
     initSelectionHighlighterEl() {
         this.selectionEl = document.createElement('div');
@@ -172,14 +157,15 @@ class SelectionListener {
         const listener = this.boundMethods.selectedNotesKeydownListener
         document.removeEventListener(listener.eventType, listener.method)
     }
-    selectedNotesKeydownListener(event: KeyboardEvent) {
+    selectedNotesKeyupListener(event: KeyboardEvent) {
+        if (event.key.toLowerCase() == 'shift') return; 
+        // return console.log('-------selectedNotesKeyupListener---------', event.key == 'Shift');
         event.preventDefault();
-        
         const shift = event.shiftKey;
         const ctrl = event.ctrlKey;
         if (event.key == 'Delete') {
             this.deleteSelectedNotes(shift);
-
+            this.selectedNotes = [];
         } else if (event.code == 'KeyD') {
             const firstTgCurrentMode = this.selectedNotes[0]?.tabGroup.showTabDurSym
             this.selectedNotes.forEach(n => n.tabGroup.showTabDurSym = !firstTgCurrentMode)
@@ -189,23 +175,26 @@ class SelectionListener {
     /**for Selected Notes */
     deleteSelectedNotes(deleteTabgroups = false) {
         if (!deleteTabgroups) {
-            this.selectedNotes.forEach(n => { 
-                n.tabGroup.updateSelectionMode(false); 
+            this.selectedNotes.forEach(n => {
+                n.tabGroup.updateSelectionMode(false);
                 n.softDelete();
             })
             this.cancelSelection();
             this.selectedNotes = []
         }
-        else this.selectedNotes.forEach(n => n.tabGroup?.remove());
-        
+        else {
+            const tgs = this.selectedNotes.map(n => n.tabGroup).filter((tg, index, arr) => {
+                const found = arr.find(i => i.xmlId == tg.xmlId)
+                return found && ( arr.indexOf(found) == index)
+            })
+            tgs.forEach(tg => tg.remove())
+            
+        }
         useDoc().updateUI()
         return
     }
 
-
-
     checkTabgroupsInTheArea() {
-
         const notes = this.getRetabDoc().getAllNotes();
         notes.forEach(n => {
             const isAlreadyHighlighted = this.selectedNotes.indexOf(n) > -1;
@@ -213,18 +202,23 @@ class SelectionListener {
             if (isHighlighted) {
                 if (!isAlreadyHighlighted) this.selectNote(n)
             } else {
-                if (!isAlreadyHighlighted) this.deselectNote(n)
+                this.deselectNote(n)
             }
             n.updateSelectionMode(isHighlighted || isAlreadyHighlighted)
         })
     }
     deselectNote(n: Note) {
-        const selectedIndex = this.selectedNotes.indexOf(n);
+        const selectedIndex = this.selectedNotesDuringCurrentDrag.indexOf(n);
         if (selectedIndex > -1) {
-            this.selectedNotes.splice(this.selectedNotes.indexOf(n), 1)
+            // const spliced = this.selectedNotes.splice(this.selectedNotes.indexOf(n), 1)
+            this.selectedNotesDuringCurrentDrag.splice(this.selectedNotes.indexOf(n), 1)
+            
+        } else {
+            //
         }
     }
     selectNote(n: Note) {
+        useDoc().noteFocusKey++;
         const selectedIndex = this.selectedNotesDuringCurrentDrag.indexOf(n);
         if (selectedIndex == -1) {
             this.selectedNotesDuringCurrentDrag.push(n)
@@ -256,9 +250,22 @@ class SelectionListener {
         this.sortSelectedNotes()
         this.selectionEl?.remove()
         this.setSelectedNotesListeners()
+        updateChildComponents();
+        console.log(this.selectedNotes.length);
 
     }
     onMouseDown(e: MouseEvent) {
+        // blur focused note:
+        const path = Array.from(e.composedPath())
+        const condition = path.some(i => (i instanceof Element) && (i.classList.contains('note-input') || i.classList.contains('toolbar')))
+
+        if (!condition) {
+            useDoc().lastFocusedNote = undefined
+        }
+
+
+
+
         if (this.shiftIsDown) {
             if (this.selectedNotes.length) {
                 this.startPos = [e.pageX, e.pageY];
@@ -267,12 +274,12 @@ class SelectionListener {
                 this.startPos = [e.pageX, e.pageY];
                 this.startSelection()
             } else {
-                this.cancelSelection()
+                if (!condition) this.cancelSelection()
             }
         } else {
-            this.cancelSelection();
+            if (!condition) this.cancelSelection();
             if (!this.isSelecting) {
-                this.cancelSelection();
+                if (!condition) this.cancelSelection();
             }
         }
     }
@@ -295,12 +302,12 @@ class SelectionListener {
     pasteTabgroups() {
         let anchorNote = this.getAnchorNote();
         const anchorNoteMeasureN = anchorNote?.tabGroup.staff.measure.n
-        
-        
+
+
         const cb = [...this.clipboard];
         const tabGroups = cb.map(n => n.tabGroup).filter((i, idx, arr) => arr.indexOf(i) == idx);
 
-        while(tabGroups.length) {
+        while (tabGroups.length) {
             const tg = tabGroups.shift();
 
             // const newTg = anchorNote?.tabGroup.insertTabgroupAfter();
@@ -352,7 +359,7 @@ class SelectionListener {
     onCtrl(event: KeyboardEvent) {
         const isInTheRetabDocContainer = () => {
             return !store.state.ui.showPreferencesModal
-            }
+        }
         if (!isInTheRetabDocContainer()) return;
         if (event.key == 'Control' || !event.ctrlKey) return;
         // firefox keyCode : 67
@@ -372,21 +379,19 @@ class SelectionListener {
 
 
 async function addMeasure() {
+    const doc = useDoc();
+    doc.snapshot()
+    const focusedNote = doc.getFocusedNote();
+    const tg = focusedNote?.tabGroup;
+    const measure = tg?.staff.measure;
+    const lastTg = tg?.getCurrentMeasureLastTabgroup();
+    const index = doc.section.measures.indexOf(measure!);
 
-  const doc = useDoc();
-  doc.snapshot()
-
-  const focusedNote = doc.getFocusedNote();
-  const tg = focusedNote?.tabGroup;
-  const measure = tg?.staff.measure;
-  const lastTg = tg?.getCurrentMeasureLastTabgroup();
-  const index = doc.section.measures.indexOf(measure!);
-  
-  const newMeasure = doc.section.addMeasure(index+1);
-  newMeasure.staves.forEach(staff => {
-    staff.tabGroups[0].setDur(lastTg?.dur || 4);
-    staff.tabGroups[0].setDurDots(lastTg?.getDurDots() || 0);
-  })
+    const newMeasure = doc.section.addMeasure(index + 1);
+    newMeasure.staves.forEach(staff => {
+        staff.tabGroups[0].setDur(lastTg?.dur || 4);
+        staff.tabGroups[0].setDurDots(lastTg?.getDurDots() || 0);
+    })
 }
 function initNewDocStuff() {
     const doc = (store.state.currentDoc) as RezTabFile
@@ -407,13 +412,17 @@ const isLoaded = ref(false);
 const sl = ref(new SelectionListener(retabDocContainer.value!));
 const temp = ref(sl.value.selectionHighlighterXYs)
 onMounted(async () => {
-    
-    if(docId.value == 'new') initNewDocStuff()
+
+    if (docId.value == 'new') initNewDocStuff()
 
     await fetchDoc(docId.value);
     isLoaded.value = true;
     sl.value.setListeners();
-setTimeout(useDoc().updateUI, 100)
+    useDoc().updateUI()
+    setTimeout(() => {
+        useDoc().unfreeze();
+        return
+    }, 100)
 
 
 });

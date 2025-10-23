@@ -19,11 +19,9 @@
             { key: 'edit', label: 'edit', },
             { key: 'remove', label: 'remove', },
 
-        ]" hoverable :clickable="true" striped @row:click="({ event }) => rowClick(event)"
-         @row:dblclick="(vaEvent) => rowClick(vaEvent, true)"
+        ]" hoverable :clickable="true" striped @row:click="({ item }) => rowClick(item)"
          @row:contextmenu="(vaEvent) => toggleSelectRow(vaEvent)"
         v-model="selectedItems">
-
 
             <template #cell(title)="{ rowData }">
                 <router-link class="w-full h-full block " :to="'/doc/' + rowData.id">
@@ -83,17 +81,9 @@ async function getSavedDocsList() {
 
 }
 
-function rowClick(e: Event, newTab = false) {
-    const target = (e.target as HTMLElement);
-    if (target.tagName.toLocaleLowerCase() == 'td') {
-        if (newTab) {
-            target.querySelector('a')?.setAttribute('target', '_blank')
-            target.querySelector('a')?.click()
-            target.querySelector('a')?.removeAttribute('target')
-        } else {
-            target.querySelector('a')?.click()
-        }
-    }
+function rowClick(item: typeof list.value[0]) {
+    router.push('/doc/' + item.id)
+   
 }
 async function removeSelected()  {
     

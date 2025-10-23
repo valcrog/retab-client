@@ -26,7 +26,6 @@
                 <VaNavbarItem>
                   <router-link :to="'/dev-test'">
                     <CodeBracketSquareIcon class="fill-white w-8"/>
-                    
                   </router-link>
                 </VaNavbarItem>
                 

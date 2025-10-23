@@ -1,3 +1,4 @@
+import { useDoc } from "@/composables/useDoc";
 import MeiAttribute from "./mei-modules/MeiAttribute";
 import MeiTag, { TMeiTagFactoryArgs } from "./mei-modules/MeiTag";
 import TabGroup from "./TabGroup";
@@ -9,6 +10,7 @@ export default class Note extends MeiTag {
     static FRENCH_TAB_DIAPAZONES_UNICODES = ['\uEBCD', '\uEBCE', '\uEBCF', '\uEBD0'] // 7 8 9 10
     static ITALIAN_TAB_UNICODES = ['\uEBE0', '\uEBE1', '\uEBE2', '\uEBE3', '\uEBE4', '\uEBE5', '\uEBE6', '\uEBE7', '\uEBE8', '\uEBE9', '\uEBE1\uEBE0', '\uEBE1\uEBE1', '\uEBE1\uEBE2', '\uEBE1\uEBE3', '\uEBE1\uEBE4']
     tagTitle = 'note';
+    debugData: any;
     static MAX_FRET_INPUT = 14
     getDoc() {return this.tabGroup.getDoc()}
     setAttributes(): void {
@@ -111,14 +113,15 @@ export default class Note extends MeiTag {
         return isInRange
     }
 
-    getDebugElData() {
-        if (!this.el) return;
-        this.setupEl()
-        const bcr = this.el.getBoundingClientRect();
-        const { x: initialx, y: initialy } = bcr;
-        const x = initialx + window.scrollX
-        const y = initialy + window.scrollY
-        return [this.el, x, y]
+    getDebugData() {
+        // if (!this.el) return;
+        // this.setupEl()
+        // const bcr = this.el.getBoundingClientRect();
+        // const { x: initialx, y: initialy } = bcr;
+        // const x = initialx + window.scrollX
+        // const y = initialy + window.scrollY
+        // return [this.el, x, y]
+        return this.debugData
     }
     static validFretIndicator(somefret: string | undefined | number) {
         if ([0, '0'].includes(somefret!)) return true
@@ -164,6 +167,7 @@ export default class Note extends MeiTag {
     }
 
     softDelete() {
+        useDoc().snapshot();
         this.fret = undefined
     }
 

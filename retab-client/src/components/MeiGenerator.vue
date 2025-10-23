@@ -23,7 +23,6 @@ import RezTabFile from '@/store/modules/RezTabFile';
 import { ref } from 'vue';
 import { useToast } from 'vuestic-ui/web-components';
 import { useStore } from 'vuex';
-import DevTest from './utils/DevTest.vue';
 import { useRouter } from 'vue-router';
 import { useDoc } from '@/composables/useDoc';
 const store = useStore();
