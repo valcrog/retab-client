@@ -57,3 +57,6 @@ export type TSectionInfo = {
 }
 
 export type DurNum = 1|2|4|8|16|32|64
+
+
+export type TTimeSignature = `${number}-${number}`

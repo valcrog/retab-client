@@ -195,7 +195,7 @@ title[type=desc][something=else]
     }
 
     remove() {
-        console.log('%cremoving ' + this.tagTitle + '| parent: ' + this.parent?.tagTitle, 'color: blue; font-weight: bold');
+        // console.log('%cremoving ' + this.tagTitle + '| parent: ' + this.parent?.tagTitle, 'color: blue; font-weight: bold');
         
         this.parent?.children.splice(this.parent.children.indexOf(this), 1);
     }

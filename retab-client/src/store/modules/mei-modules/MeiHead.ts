@@ -21,7 +21,6 @@ export default class MeiHead extends MeiTag {
     //     return
     // }
     updateChildren(): MeiTag {
-        console.log('updating head children');
         const cannotBeRemovedTagTitles = [
             'pubStmt', 'titleStmt', 'title'
         ]

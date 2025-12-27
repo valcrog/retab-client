@@ -21,6 +21,7 @@ import StaffLineComp from './StaffLineComp.vue';
 
 import DurationSymbol from '@/components/RezTabDoc/DurationSymbol/index.vue'
 import { DurNum } from '@/store/modules/types';
+import DevTest from '../utils/DevTest.vue';
 const props = defineProps<{ tabGroup: TabGroup, tabgroupId: string }>();
 onUpdated(setTabgroupContainerId);
 onMounted(setTabgroupContainerId);

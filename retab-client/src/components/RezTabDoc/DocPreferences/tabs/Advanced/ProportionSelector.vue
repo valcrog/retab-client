@@ -1,12 +1,16 @@
 <template>
     <div class="proportion-selector">
 
+        <div>
 
+            <va-checkbox label="Fixed Measures" v-model="getDoc().docSettings.fixedMeasures" @update:modelValue="getDoc().docSettings.proportion.include = true" />
+        </div>
         <va-checkbox v-model="getDoc().docSettings.proportion.include"
             :class="{ 'enabled': getDoc().docSettings.proportion.include }" label="Include Proportion" />
         <div class="grid gap-x-2 grid-cols-3 items-start">
             <va-input :disabled="!getDoc().docSettings.proportion.include" color="white" type="number" label="num"
                 v-model="num" />
+            
             <va-input :disabled="!getDoc().docSettings.proportion.include" color="white" type="number" label="numbase"
                 v-model="numbase" />
             <div class="sign-checkboxs">

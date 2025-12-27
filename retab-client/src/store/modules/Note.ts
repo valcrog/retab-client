@@ -147,8 +147,14 @@ export default class Note extends MeiTag {
     }
 
     getRightNote() {
-        return this.tabGroup.getNeighbour(1)?.notes.find(n => n.course == this.course)
-            || this.getNextMeasureFirstNote()
+        console.log('wanna get %cRight %cNote', 'font-weight: bold; padding: 1rem; background-color: blue; color: white;', 'color: inherit; font-weight: normal;');
+        const nextTabgroupNote =  this.tabGroup.getNeighbour(1)?.notes.find(n => n.course == this.course)
+        const nextMasureFirstNote =  this.getNextMeasureFirstNote()
+        const rightNote = nextTabgroupNote || nextMasureFirstNote
+            
+            console.log(this.tabGroup.staff.measure.n);
+            
+        return rightNote
 
     }
     getLeftNote() {

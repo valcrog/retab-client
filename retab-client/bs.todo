@@ -1,0 +1,33 @@
+# Brain storming about fix measures in RéTab
+Hey there! we are fixating measures in RéTab now!
+## What do I want?
+- I want RéTab to 
+    - have an option for fixating measures
+    - make wrongSize Measures red or some shade. with some alert
+## What is needed?
+- timesignature (or proportion?) must be set
+- have an option for fixating measures
+    - in `RezTabFile.docSettings` → have a property:  `fixedMeasures` @done
+    - update *schema.prisma* accordingly --> with default of `false` @done
+        - DB types of front and back must be updated @done
+- show timesignature in the begining of the score @done
+    - also update the save and fetch process of *docSettings* accordingly @done
+        - In both server and client side @done
+    - show symbols for 2/2 and 4/4 in Timesignature component @done
+- make wrongSize Measures red or some shade. with some alert @done
+    - in *MeasureComp.vue* → a coditional class `wrongSize` @done
+    -  *Measure* must have a method to validate if it has the right size `Measure.validateSize` @done
+- a listener for when the tabgroups are inserted or have their durtaion changed || the getter works as the listener too! @done
+- a validator when some MEI file is imported.
+    - could be calling *Measure.validateSize* 
+- while typing, if the measure tabgroups length is exceeding the measure length: @done
+    - automatically go to next measure (make one if it not exists) @done
+        - could be called on *TabGroup* insert. (some listener for inserting tabgroups inside measure)
+    - if the last not duration is longer than it can be, make it fit in the measure and tie it to the remaing duration in next measure.
+        - so the validation could tell us if the *Measure* is either *full* or *exceeded* to do corresponding action.
+
+- todo NEXT:
+    - implement TIEs!
+BUGS:
+    // - `→` arrow key for focusing next note does not work properly. sometimes it sticks, sometimes it goes back all the way to the previous measure's first tabgroup.
+    - adding measure adds one in the beginning! @done

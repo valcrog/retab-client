@@ -6,7 +6,7 @@ import MeiTag, { TMeiTagFactoryArgs } from "./mei-modules/MeiTag";
 import Note from "./Note";
 import RezTabFile from "./RezTabFile";
 import Staff, { StaffLine } from "./Staff";
-import { TabCourseTuningInfo, TCourseInfo, TSectionInfo, TStaffInfo } from "./types";
+import { TabCourseTuningInfo, TCourseInfo, TSectionInfo, TStaffInfo, TTimeSignature } from "./types";
 
 export default class Section extends MeiTag {
     tagTitle = 'section';
@@ -18,6 +18,11 @@ export default class Section extends MeiTag {
         this.doc = doc
         this.measures = measures;
         this.info = info;
+    }
+
+
+    get timeSignature(): TTimeSignature | undefined {
+        return !this.getDoc().docSettings.proportion.include ? undefined :   (this.getDoc().docSettings.proportion.num + '-' + this.getDoc().docSettings.proportion.numbase)  as TTimeSignature
     }
     getDoc() {return this.doc}
     getAllNotes(justTheExistingOnes = true): Note[] {

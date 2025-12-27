@@ -3,6 +3,8 @@
         <Toolbar :key="useDoc().noteFocusKey * toolCompKey" :selected-notes="(sl.selectedNotes as Note[])" />
         <DocTitle :key="store.state.utils.keyCoefficient" />
         <div class="section flex max-w-full overflow-x-auto overflow-y-hidden">
+        <TimeSignature/>
+            
             <MeasureComp :measure-n="(measure as Measure).n"
                 v-for="(measure, index) in store.state.currentDoc.section.measures" :measure="measure"
                 :key="(index + 1) * store.state.utils.keyCoefficient * 10"
@@ -386,8 +388,9 @@ async function addMeasure() {
     const measure = tg?.staff.measure;
     const lastTg = tg?.getCurrentMeasureLastTabgroup();
     const index = doc.section.measures.indexOf(measure!);
-
-    const newMeasure = doc.section.addMeasure(index + 1);
+    
+    
+    const newMeasure = doc.section.addMeasure((index + 1) || undefined);
     newMeasure.staves.forEach(staff => {
         staff.tabGroups[0].setDur(lastTg?.dur || 4);
         staff.tabGroups[0].setDurDots(lastTg?.getDurDots() || 0);
@@ -434,6 +437,5 @@ if ((store.state.currentDoc as RezTabFile).section.measures.length == 0) (store.
 // }>() 
 async function debugSL() {
     sl.value.removeListeners()
-
 }
 </script>

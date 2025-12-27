@@ -193,15 +193,34 @@ export default class Staff extends MeiTag {
     // }
     
 
-    addTabGroup(index?: number, tgToAdd?: TabGroup) {
-        const newOne = tgToAdd ||  new TabGroup(this.getLayer())
+    insertTabGroup(index?: number, tgToAdd?: TabGroup) {
         
-        if (!index && index != 0) this.tabGroups.push(newOne);
-        else this.tabGroups.splice(index, 0, newOne)
+        console.log('staff is Adding Tabgroup', tgToAdd);
+  
+        console.log(this.measure.wrongSize);
+        let newOne: TabGroup;
+        if (this.measure.wrongSize < 0) {
+                  newOne = tgToAdd ||  new TabGroup(this.getLayer())
+            this.addTabGroup(newOne, index)
+        } else {
+            // /next measure push to first/
+            console.log(this.measure.getNeighbour(1)?.n);
+            const nextMeasure = this.measure.getNeighbour(1) || this.measure.section.addMeasure(this.measure.section.measures.indexOf(this.measure) + 1);
+            
+            newOne = tgToAdd ||  new TabGroup(nextMeasure.getStaffFromN(this.n)?.getLayer() as Layer)
+            const correspondingStaff = nextMeasure.getStaffFromN(this.n)
+            correspondingStaff?.addTabGroup(newOne, 0)
+        }
+
+        return newOne
+    }
+
+    addTabGroup(tgToAdd: TabGroup, index?: number) {
+        if (!index && index != 0) this.tabGroups.push(tgToAdd);
+        else this.tabGroups.splice(index, 0, tgToAdd)
         
         this.updateChildren();
         this.getDoc().updateUI()
-        return newOne
     }
 
     removeTabgroup(tg: TabGroup) {
@@ -238,7 +257,7 @@ export default class Staff extends MeiTag {
         let index = this.tabGroups.indexOf(tg)
 
         if (index < 0) index = 0
-        return this.addTabGroup(index, tgToAdd)
+        return this.insertTabGroup(index, tgToAdd)
     }
 
     insertTabgroupAfter(tg: TabGroup, tgToAdd?: TabGroup) {
@@ -246,7 +265,7 @@ export default class Staff extends MeiTag {
         let index = this.tabGroups.indexOf(tg)
         
         if (index < 0) index = 0
-        return this.addTabGroup(index + 1, tgToAdd)
+        return this.insertTabGroup(index + 1, tgToAdd)
     }
     reorderLines(tabType: TabType) {
         if (tabType == TabType.ITALIAN) this.lines = this.lines.sort((a, b) => b.courseInfo.number - a.courseInfo.number)

@@ -1,5 +1,6 @@
 <template>
   <div v-if="note">
+         
     <input @keydown.space="onSpace" autocomplete="false" @paste="(e) => { e.preventDefault() }" @keyup="keyup"
       @keydown="keydown" @keypress="keypress" @focus="onNoteInputFocus"
       class="note-input lute-tab p-1 w-9 border-1 border-red border-solid" maxlength="2" type="string" v-model="fret"
@@ -28,7 +29,6 @@ const note = computed(() => props.tabGroup.getNoteOnCourse(props.line.courseInfo
 const fret = ref<string | number | undefined>(note.value?.getFretToShow());
 
 watch(fret, val => {
-  
   if (/^[\u0080-\uFFFF]+$/.test(val + '')) {
     if (note.value.getFretToShow().includes(val + '') ) {
       useDoc().snapshot();
@@ -43,7 +43,6 @@ watch(fret, val => {
 function setFret(val: any) {//: string | number) {
   // test if the second digit has been added
   const exec = /^[\u0080-\uFFFF](\d)/.exec(val)
-  console.log({val}, exec);
   
   if (!exec) {
     if (val == '')  {
@@ -72,7 +71,7 @@ function onSpace() {
   useDoc().snapshot();
   event?.preventDefault();
   // useDoc().snapshot();
-  const newTabGroup = props.tabGroup.staff.addTabGroup();
+  const newTabGroup = props.tabGroup.staff.insertTabGroup();
   newTabGroup.setDur(props.tabGroup.dur)
   const newNoteOnTheSameCourse = newTabGroup.notes.find(n => n.course == note.value.course)
   setTimeout(() => {

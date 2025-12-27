@@ -8,6 +8,7 @@ export type TDbDocSettings = {
     docId?: number
     defaultFirstTabgrpDurSymShow?: boolean
     tabgroupsIncludeDurAttribute?: boolean
+    fixedMeasures?: boolean
     proportionInclude?: boolean
     proportionNum?: number | null
     proportionNumbase?: number | null
@@ -112,6 +113,7 @@ export type TDocSettings = {
     docId?: number
     defaultFirstTabgrpDurSymShow?: boolean
     tabgroupsIncludeDurAttribute?: boolean
+    fixedMeasures?: boolean
     proportionInclude?: boolean
     proportionNum?: number | null
     proportionNumbase?: number | null

@@ -31,6 +31,7 @@ type DocSetttings = {
     sign?: "C";
     slash?: 1;
   };
+  fixedMeasures: boolean
 };
 
 export default class RezTabFile {
@@ -43,6 +44,7 @@ export default class RezTabFile {
     defaultFirstTabgrpDurSymShow: true,
     tabgroupsIncludeDurAttribute: true,
     proportion: { include: false, num: 3, numbase: 2 },
+    fixedMeasures: false
   };
   id?: number;
   head?: MeiHead;
@@ -195,6 +197,8 @@ export default class RezTabFile {
       this.docSettings.defaultFirstTabgrpDurSymShow;
     this.docSettings.proportion.include =
       settings.proportionInclude || this.docSettings.proportion.include;
+    this.docSettings.fixedMeasures =
+      settings.fixedMeasures || this.docSettings.fixedMeasures;
     this.docSettings.proportion.num =
       settings.proportionNum || this.docSettings.proportion.num;
     this.docSettings.proportion.numbase =

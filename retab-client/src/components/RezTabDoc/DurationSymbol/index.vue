@@ -67,7 +67,7 @@
                     </symbol>
                 </defs>
                 <svg class="definition-scale" color="black" viewBox="0 0 500 500">
-                    <g v-html="dic[props.durNum]">
+                    <g v-html="empty? dic.empty : dic[props.durNum]">
 
                     </g>
 
@@ -101,7 +101,7 @@
 <script setup lang="ts">
 import { DurNum } from '@/store/modules/types';
 import { defineProps } from 'vue'
-const props = defineProps<{ durNum: 1 | 2 | 4 | 8 | 16 | 32 | 64, dots: number, showTabDurSym: boolean }>();
+const props = defineProps<{ durNum: 1 | 2 | 4 | 8 | 16 | 32 | 64, dots: number, showTabDurSym: boolean, empty?: boolean }>();
 const viewBox = "0 0 1000 1000";
 const y = 500;
 const x = 25;
@@ -109,6 +109,7 @@ const dotXOffset = 10;
 const height = 475
 const width = 475;
 const dic = {
+    empty: `<use   x="${x}" y="${y}" height="${height}px" width="${width}px"></use>`,
     1: `<use xlink:href="#EBA6-ff46wk"  x="${x}" y="${y}" height="${height}px" width="${width}px"></use>`,
     2: `<use xlink:href="#EBA7-ff46wk"  x="${x}" y="${y}" height="${height}px" width="${width}px"></use>`,
     4: `<use xlink:href="#EBA8-ff46wk"  x="${x}" y="${y}" height="${height}px" width="${width}px"></use>`,

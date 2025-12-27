@@ -34,7 +34,11 @@ export default class TabGroup extends MeiTag {
     containerElId?: string
     tabDurSymId?: number;
     get staff() { return this.layer.staff }
+    get durationToWholeNote() {
+        return (1/this.dur) * 1.5**(this.durDots || 0)
+    }
 
+    
     setAttributes(): void {
         if (this.includeDurAttribute) {
             this.setAttribute(new MeiAttribute('dur', this.dur))
@@ -170,7 +174,7 @@ export default class TabGroup extends MeiTag {
     }
     getPrevMeasureLastNote(courseNumber = 6, staffIndex = 0) {
         const thisMeasure = this.staff.measure;
-        const prevMeasure = thisMeasure.getNeighbour(-1);
+        const prevMeasure = thisMeasure.getNeighbour(-1) as Measure;
         const lastIndex = prevMeasure?.staves[staffIndex].tabGroups?.length - 1
         return prevMeasure?.staves[staffIndex].tabGroups?.[lastIndex]?.getNoteOnCourse(courseNumber)
     }

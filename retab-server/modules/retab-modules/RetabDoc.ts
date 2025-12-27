@@ -186,6 +186,7 @@ export default class RetabDoc implements TRetabDoc {
         const settingsData = {
             defaultFirstTabgrpDurSymShow: this.settings?.defaultFirstTabgrpDurSymShow,
             proportionInclude: this.settings?.proportionInclude,
+            fixedMeasures: this.settings?.fixedMeasures,
             proportionNum: this.settings?.proportionNum,
             proportionNumbase: this.settings?.proportionNumbase,
             proportionSign: this.settings?.proportionSign || null,
@@ -286,7 +287,8 @@ export default class RetabDoc implements TRetabDoc {
     assignDocSettings(docStetings: {
         defaultFirstTabgrpDurSymShow: boolean,
         proportion: { include: boolean, num: number, numbase: number, sign?: string, slash?: number }
-        tabgroupsIncludeDurAttribute: boolean
+        tabgroupsIncludeDurAttribute: boolean,
+        fixedMeasures?: boolean
     }) {
         this.settings = {
             defaultFirstTabgrpDurSymShow: docStetings.defaultFirstTabgrpDurSymShow,
@@ -296,7 +298,7 @@ export default class RetabDoc implements TRetabDoc {
             tabgroupsIncludeDurAttribute: docStetings.tabgroupsIncludeDurAttribute,
             proportionSign: docStetings.proportion.sign,
             proportionSlash: docStetings.proportion.slash,
-
+            fixedMeasures: docStetings.fixedMeasures,
             docId: this.id || undefined
         }
     }

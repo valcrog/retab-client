@@ -55,6 +55,7 @@ model DocSettings {
   proportionNumbase            Int?     @default(2)
   proportionSign               String?
   proportionSlash              Int?
+  fixedMeasures       Boolean @default(false)
 }
 
 model StaffInfo {
