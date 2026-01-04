@@ -2,11 +2,11 @@
 Hey there! we are fixating measures in RéTab now!
 ## What do I want?
 - I want RéTab to 
-    - have an option for fixating measures
-    - make wrongSize Measures red or some shade. with some alert
+    - have an option for fixating measures @done
+    - make wrongSize Measures red or some shade. with some alert @done
 ## What is needed?
-- timesignature (or proportion?) must be set
-- have an option for fixating measures
+- timesignature (or proportion?) must be set @done
+- have an option for fixating measures @done
     - in `RezTabFile.docSettings` → have a property:  `fixedMeasures` @done
     - update *schema.prisma* accordingly --> with default of `false` @done
         - DB types of front and back must be updated @done
@@ -29,5 +29,5 @@ Hey there! we are fixating measures in RéTab now!
 - todo NEXT:
     - implement TIEs!
 BUGS:
-    // - `→` arrow key for focusing next note does not work properly. sometimes it sticks, sometimes it goes back all the way to the previous measure's first tabgroup.
+    - `→` arrow key for focusing next note does not work properly. sometimes it sticks, sometimes it goes back all the way to the previous measure's first tabgroup. @done
     - adding measure adds one in the beginning! @done
