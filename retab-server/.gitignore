@@ -3,6 +3,7 @@ node_modules
 .env*
 cmd
 dist/*
+./retab-server/dist/
 .poster-playground
 .ignored-stuff
 .ignored-stuff/*
