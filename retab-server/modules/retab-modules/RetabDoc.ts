@@ -60,6 +60,7 @@ export default class RetabDoc implements TRetabDoc {
             )
         }
     }
+
     setTuning(coursesInfo: TTabCourseTuningInfo[], staffN = 1) {
         let sic = this.getStaffInfoContainer(staffN);
         if (sic) sic.setTuning(coursesInfo)
@@ -81,6 +82,8 @@ export default class RetabDoc implements TRetabDoc {
         (this.mainChild as MeiMainTag).appendSection(section as MeiTag);
     }
     static async getInstanceFromDb(id: number) {
+        console.log({id});
+        
         try {
             const info = await DB.getInstance().retabDoc.findUniqueOrThrow({
                 where: { id },
@@ -99,6 +102,8 @@ export default class RetabDoc implements TRetabDoc {
             instance.setInfo(info as TRetabDoc)
             return instance;
         } catch (error) {
+            console.log(error);
+            
             console.log('Err: No Doc Record Found.')
         }
 

@@ -182,6 +182,7 @@ export default class RezTabFile {
     });
     doc.id = someResponse.id;
     doc.setLinesCount(someResponse.stavesInfo[0].tuning.length);
+    
     doc.initializeSection(
       someResponse.sectionJsonXmlElement,
       someResponse.stavesInfo
