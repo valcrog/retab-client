@@ -2,6 +2,22 @@
 Vue/Express.js web application for encoding early music tablature. FOR LOCAL USE ONLY
 
 ## Installing
+
+### Windows workaround
+/!\ If you are running on Windows, navigate to the following file : `retab-server/package.json` and remove `sudo` from the following line (line 8):
+```
+    ...
+    7 "test": "echo \"Error: no test specified\" && exit 1",
+    8 "start:db": "sudo docker start retab-mysql",  # <---- REMOVE [sudo]
+    9 "start:server": "nodemon index.ts",
+    ...
+```
+Line 8 should look like this :
+```
+"start:db": "docker start retab-mysql"
+```
+
+### Instructions
 First, run `npm install` in both `./retab-client` and `./retab-server` using
 ```
 cd ./retab-client
