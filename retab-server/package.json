@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx nodemon index.ts"
+    "start:db": "sudo docker start retab-mysql",
+    "start:server": "nodemon index.ts",
+    "start:client": "cd ../retab-client && npm run serve",
+    "predev": "npm run start:db",
+    "dev": "concurrently -k -n \"SERVER,CLIENT\" -c \"bgMagenta.bold,bgGreen.bold\" \"npm run start:server\" \"npm run start:client\""
   },
   "keywords": [],
   "author": "",
@@ -43,6 +47,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.10.5",
+    "concurrently": "^9.2.1",
     "prisma": "^6.2.0",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"
