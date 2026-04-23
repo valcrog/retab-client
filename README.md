@@ -1,52 +1,23 @@
 # ReTab
-Vue/Express.js web application for encoding early music tablature
+Vue/Express.js web application for encoding early music tablature. FOR LOCAL USE ONLY
 
+## Installing
+First, run `npm install` in both `./retab-client` and `./retab-server` using
+```
+cd ./retab-client
+npm install
+cd ../retab-server
+npm install
+```
+Then, instantiate Docker database using
+```
+sudo docker run --name retab-mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=retab_db -p 3307:3306 -d mysql:latest
+```
 
-## Experience the ReTab
-Try ReTab https://tab.rezaseyedi.com
- with a guest account:
--    username: guest
--    password: retabguest@123
-
-or contact reza.seyedi010@gmail.com if you want to use ReTab with a personal account.
-
-
-
-## Development
-clone the repository:
-### client:
-create .env file:
-
-    VUE_APP_API_URL="http://localhost:4000"
-    VUE_APP_API_URL_PRODUCTION="https://tab.rezaseyedi.com/api/"
-    VUE_APP_ENV="development"
-    cd ./retab-client
-    npm install 
-    npm run serve
-
-
-
-### server:
-    cd ./retab-server
-
-
-create .env file with these environment variables: : 
-
-    PORT=4000
-    MODE="development"
-    TAB_CLIENT_URL="http://localhost:8080"
-
-    DATABASE_URL="mysql://username:password@localhost:3306/dbname"
-
-then run: 
-
-    npm install
-let prisma make a local mysql database;
-
-    npx prisma migrate deploy
-
-run development server:
-
-    npx nodemon index.ts
-
-
+## Running
+After install, run
+```
+cd ./retab-server
+npm run dev
+```
+to launch the app. The client should be running on `localhost:8080`.
