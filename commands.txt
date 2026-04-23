@@ -1,0 +1,12 @@
+create docker db:
+sudo docker run --name retab-mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=retab_db -p 3307:3306 -d mysql:latest
+
+prisma studio:
+npx prisma studio
+
+get guest password hash:
+node -e "require('bcrypt').hash('retabguest@123', 10).then(console.log);"
+
+change server .env:
+DATABASE_URL="mysql://root:root@127.0.0.1:3307/retab_db"
+SECRET_KEY="azerty"
