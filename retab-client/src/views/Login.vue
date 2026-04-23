@@ -46,18 +46,23 @@ or contact reza.seyedi010@gmail.com if you want to use ReTab with a personal acc
 
 <script setup lang="ts">
 import axios from 'axios';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useToast } from 'vuestic-ui/web-components';
 import { useStore } from 'vuex';
 const isPasswordVisible = ref(false)
-const username = ref('')
-const password = ref('')
+const username = ref('guest')
+const password = ref('retabguest@123')
 const store = useStore();
 const toast = useToast();
 const reqSent = ref(false)
 
 const router = useRouter();
+
+onMounted(() => {
+    login();
+});
+
 async function login() {
     reqSent.value = true
     const formData = new FormData();
