@@ -1,10 +1,8 @@
 # ReTab
 Vue/Express.js web application for encoding early music tablature. FOR LOCAL USE ONLY
 
-## Installing
-
-### Windows workaround
-/!\ If you are running on Windows, navigate to the following file : `retab-server/package.json` and remove `sudo` from the following line (line 8):
+## Quick start: Windows
+If you are running on Windows, navigate to the following file : `retab-server/package.json` and remove `sudo` from the following line (line 8):
 ```
     ...
     7 "test": "echo \"Error: no test specified\" && exit 1",
@@ -16,6 +14,10 @@ Line 8 should look like this :
 ```
 "start:db": "docker start retab-mysql"
 ```
+Then, double click on `Launch-ReTab.bat` to automatically setup and run the app :)
+Once ReTab is running, you can access it through your browser with URL`localhost:8080`
+
+## Installing
 
 ### Instructions
 First, run `npm install` in both `./retab-client` and `./retab-server` using
