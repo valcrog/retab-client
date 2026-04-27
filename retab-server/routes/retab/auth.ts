@@ -11,7 +11,12 @@ router.post('/login', async (req, res) => {
         const user = await new Authenticator().login(userInfo.username, userInfo.password);
         const token = jwt.sign(user.getSignInfo(), process.env.SECRET_KEY || '');
         
-        res.cookie('x-access-token', token).send(user);
+        res.cookie('x-access-token', token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+            maxAge: 24 * 60 * 60 * 1000
+        }).send(user);
 
     } catch(err: any) {
         // if (process.env.MODE == 'development') throw err  ; else 
