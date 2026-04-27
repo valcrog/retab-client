@@ -22,7 +22,7 @@ const hasError = ref(false);
 
 onMounted(async () => {
   try {
-    await axios.get(`${import.meta.env.VUE_APP_API_URL}/retab/health`, { timeout: 60000 });
+    await axios.get(`${process.env.VUE_APP_API_URL}/retab/health`, { timeout: 60000 });
     
     isServerReady.value = true;
     
