@@ -21,47 +21,24 @@
             </va-card-content>
         </va-card>
         <hr>
-        <va-divider></va-divider>
-        <va-card color="info">
-            <va-card-content>
-                Try ReTab https://tab.rezaseyedi.com with a guest account:
-                <br>
-                <strong>
-                    username: 
-                </strong>
-                guest
-                <br>
-                <strong>
-                    password: 
-                    
-                </strong>
-                retabguest@123
-                <br>
-or contact reza.seyedi010@gmail.com if you want to use ReTab with a personal account.
-            </va-card-content>
-        </va-card>
     </div>
 </template>
 
 
 <script setup lang="ts">
 import axios from 'axios';
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useToast } from 'vuestic-ui/web-components';
 import { useStore } from 'vuex';
 const isPasswordVisible = ref(false)
-const username = ref('guest')
-const password = ref('retabguest@123')
+const username = ref('')
+const password = ref('')
 const store = useStore();
 const toast = useToast();
 const reqSent = ref(false)
 
 const router = useRouter();
-
-onMounted(() => {
-    login();
-});
 
 async function login() {
     reqSent.value = true
