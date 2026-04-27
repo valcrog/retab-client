@@ -173,7 +173,3 @@ ALTER TABLE `_TabCourseTuningInfoToTuningPreset` ADD CONSTRAINT `_TabCourseTunin
 
 -- AddForeignKey
 ALTER TABLE `_TabCourseTuningInfoToTuningPreset` ADD CONSTRAINT `_TabCourseTuningInfoToTuningPreset_B_fkey` FOREIGN KEY (`B`) REFERENCES `TuningPreset`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- Inject default admin user
-INSERT INTO `User` (`name`, `username`, `password`) 
-VALUES ('Admin', 'guest', '$2b$10$eBo50/stL94SZcSUrM4FFOXKLjsb0t1DzwTrqr/7HpX34e3BwdT5C');
