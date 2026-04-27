@@ -49,17 +49,24 @@ async function login() {
     formData.append('password', password.value);
     
     axios.post(store.state.apiUrl + '/retab/auth/login', formData, {withCredentials: true})
-    .then(r => {
-        reqSent.value = false
-        toast.init({
-            message: 'Logged in successfully',
-            color: 'success',
-            position: 'bottom-right'
-        })
+    .then(async (r) => {
+      reqSent.value = false;
+      toast.init({
+          message: 'Logged in successfully',
+          color: 'success',
+          position: 'bottom-right'
+      });
 
-        store.state.currentUser = r.data;
-        router.push({path: '/doc'})
-    })
+      store.commit('setCurrentUser', r.data); 
+      console.log("Tentative de redirection vers /doc...");
+
+      try {
+          await router.push({ path: '/doc' });
+          console.log("Redirection réussie !");
+      } catch (routerError) {
+          console.error("Le routeur a bloqué la navigation :", routerError);
+      }
+  })
     .catch(err => {
         reqSent.value = false
         toast.init({
