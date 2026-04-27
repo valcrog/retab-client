@@ -6,10 +6,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:db": "sudo docker start retab-mysql",
-    "start:server": "nodemon index.ts",
     "start:client": "cd ../retab-client && npm run serve",
     "predev": "npm run start:db",
-    "dev": "concurrently -k -n \"SERVER,CLIENT\" -c \"bgMagenta.bold,bgGreen.bold\" \"npm run start:server\" \"npm run start:client\""
+    "dev": "concurrently -k -n \"SERVER,CLIENT\" -c \"bgMagenta.bold,bgGreen.bold\" \"npm run start:dev\" \"npm run start:client\"",
+    
+    "start:dev": "nodemon index.ts",
+    "build": "prisma generate && tsc",
+    "start": "node dist/index.js"
   },
   "keywords": [],
   "author": "",
