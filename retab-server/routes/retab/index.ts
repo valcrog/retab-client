@@ -15,4 +15,5 @@ router.get('/test', async (req, res) => {
     
     res.json('meiMainTag')
 })
+router.get('/health', (req,res) => res.send('OK'))
 export default router
